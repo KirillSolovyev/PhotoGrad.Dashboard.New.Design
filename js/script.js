@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	let preventSliding = false;
+
 	$(".dashboard-content__content-carousel").owlCarousel({
 		items: 1,
 		center: true,
@@ -34,13 +36,38 @@ $(document).ready(function() {
 			}
 		});
 		$(".slider-dots__item").removeClass("slider-dots__item_active");
-		$(".more-info-table-container").removeClass("more-info-table-container_active");
+		// $(".more-info-table-container").removeClass("more-info-table-container_active");
 		$(".slider-dots__item").eq(pos).addClass("slider-dots__item_active");
+	});
+
+	$(".more-info-table-container").on("touchstart mousedown", function(e) {
+	    e.stopPropagation();
+	})
+
+	$(".dashboard-content").click(function(e) {
+		if($(e.target).hasClass("offer-table__main-button")) return;
+		if($(e.target) !== $(".more-info-table-container") && $(e.target).parents(".more-info-table-container").length <= 0){
+			$(".more-info-table-container").removeClass("more-info-table-container_active");
+		}
 	});
 
 	$(".offer-table__main-button").click(function(e) {
 		e.preventDefault();
-		// console.log($(this).parents(".content-carousel__slider"));
 		$(this).parents(".content-carousel__slider").find(".more-info-table-container").toggleClass("more-info-table-container_active");
 	});
+
+	$(".toggle-sidebar-button").click(function() {
+		toggleMenu();
+	});
+
+	$(".preventing-shadow").click(function() {
+		toggleMenu();
+	});
+
+	function toggleMenu(){
+		$("body").toggleClass("no-scroll");
+		$(".toggle-sidebar-button").toggleClass("toggle-sidebar-button_opened");
+		$(".dashboard-sidebar").toggleClass("dashboard-sidebar_visible");
+		$(".preventing-shadow").toggleClass("preventing-shadow_visible");
+	}
 });
